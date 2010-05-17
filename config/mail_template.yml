@@ -1,0 +1,59 @@
+pc:
+  dailyNews_lite:
+    caption: "Daily News (Lite)"
+    configurable: true
+    sample:
+      ja_JP: |
+        - "{{ op_config.sns_name }}デイリーニュース"
+        - |
+          {{ member.name }}さん、こんにちは。
+          
+          {{ op_config.sns_name }}からのお知らせです。
+          {{ member.name }}さんに本日の最新情報をお届けします。
+
+          --Menu-------------------------------------------------------------------------
+          ◆フレンドの最新日記◆
+          ◆コミュニティの最新書き込み◆
+          -------------------------------------------------------------------------------
+
+          -------------------------------------------------------------------------------
+          ◆フレンド最新日記◆
+          -------------------------------------------------------------------------------
+          {{ member.name }}さんのフレンド日記のうち最新5件をお知らせします。
+          ※本メールが配信された時点での最新5件の日記になります
+          
+          {% for diary in diaries %}
+          ◇ニックネーム：{{ diary.member.name }}さん
+          　タイトル　　：{{ diary.title }}
+          　日記を見る　：{{ sf_config.op_base_url }}/diary/{{ diary.id }}
+          
+          {% endfor %}
+          -------------------------------------------------------------------------------
+          ◆コミュニティの最新書き込み◆
+          -------------------------------------------------------------------------------
+          {{ member.name }}さんが参加しているコミュニティの最新書き込みを5件お知らせします。
+          ※本メールが配信された時点での最新5件の書き込みになります。
+
+          {% for communityTopic in communityTopics %}
+          ◇コミュニティ名：{{ communityTopic.community.name }}
+          　タイトル　　　：{{ communityTopic.name }}
+          　書き込みを見る：{{ sf_config.op_base_url }}/communityTopic/{{ communityTopic.id }}
+
+          {% endfor %}
+          これをきっかけにぜひ交流を深めてくださいね！
+
+  birthday_lite:
+    caption: "Notification of Friend Birthday (Lite)"
+    configurable: true
+    sample:
+      ja_JP:
+        - "{{ member.name }} さんのフレンドに誕生日の近い方がいます！"
+        - |
+          {{ member.name }} さんのマイフレンドに誕生日の近い方がいます！
+          日ごろの感謝をこめて、誕生日の日にお祝いのメッセージを送ってみてはいかがですか。
+          
+          誕生日　　　 : {{ birthMember.birthday|date("m 月 d 日") }}
+          ニックネーム : {{ birthMember.name }}
+          URL : {{ sf_config.op_base_url }}/member/{{ member.id }}
+          
+          {{ op_config.sns_name }} が、あなたの今後に役立ちますように、是非、ご活用いただければと思います。
