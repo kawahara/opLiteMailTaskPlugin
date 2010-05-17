@@ -1,0 +1,74 @@
+==================
+セットアップガイド
+==================
+
+はじめに
+========
+
+このドキュメントは、opLiteMailTaskPluginのセットアップに関する情報を提供するものです。
+
+opLiteMailTaskPluginは、機能限定になるものの OpenPNE3に含まれるデイリーニュース・フレンド誕生日お知らせメールを高速・低負担化したものです。
+
+動作環境
+--------
+
+OpenPNE3.4.x以上である必要があります。(OpenPNE3.5.x以上を推奨)
+
+デイリーニュースを利用する場合はOpenPNE3のが必要とする環境に加えて以下の条件を満たす必要があります。
+
+* opDiaryPluginの導入 (デフォルトバンドル)
+* opCommunityTopicPluginの導入 (デフォルトバンドル)
+
+
+セットアップ
+============
+
+プラグインのインストール
+------------------------
+
+OpenPNEのプロジェクトディレクトリで以下のコマンドを実行して下さい。
+
+
+::
+
+./symfony opPlugin:install opLiteMailTaskPlugin -s beta
+
+
+
+メール配信設定
+--------------
+
+設定例
+~~~~~~
+
+この設定をする場合は、OpenPNE3本体の デイリーニュース配信・誕生日お知らせメール配信を停止するべきです。
+
+plugins/opLiteMailTaskPlugin/bin/* のcron ファイルに設定権限を付加します。
+
+::
+
+  $ chmod -R 0755 plugins/opLiteMailTaskPlugin/*.cron
+
+/etc/crontab に以下を記述します。
+
+::
+
+  # 6 時に /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron というスクリプトを /path/to/php で実行することで /path/to/OpenPNE3 のデイリー・ニュースを配信する
+  00   6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron /path/to/OpenPNE3 /path/to/php
+
+  # 6 時に /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_birthday_mail.cron というスクリプトを /path/to/php で実行することで /path/to/OpenPNE3 の誕生日通知メールを配信する
+  00   6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_birthday_mail.cron /path/to/OpenPNE3 /path/to/php
+
+テンプレートの変更
+~~~~~~~~~~~~~~~~~~
+
+送信に利用するテンプレートは、管理画面の「メール設定」->「メール通知テンプレート設定」より変更ができます。
+
+このプラグインに関係のあるテンプレートは以下になります。
+
+Daily News (Lite)
+  このプラグインのタスクにより送信されるデイリー・ニュースのテンプレート
+Notification of Friend Birthday (Lite)
+  このプラグインのタスクにより送信される誕生日お知らせメールのテンプレート
+署名
+  デイリー・ニュースおよび誕生日お知らせメールの最後に付加される署名
