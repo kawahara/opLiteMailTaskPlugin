@@ -1,9 +1,9 @@
 pc:
   dailyNews_lite:
     caption: "Daily News (Lite)"
-    configurable: true
+    configurable: false
     sample:
-      ja_JP: |
+      ja_JP:
         - "{{ op_config.sns_name }}デイリーニュース"
         - |
           {{ member.name }}さん、こんにちは。
@@ -44,7 +44,7 @@ pc:
 
   birthday_lite:
     caption: "Notification of Friend Birthday (Lite)"
-    configurable: true
+    configurable: false
     sample:
       ja_JP:
         - "{{ member.name }} さんのフレンドに誕生日の近い方がいます！"
