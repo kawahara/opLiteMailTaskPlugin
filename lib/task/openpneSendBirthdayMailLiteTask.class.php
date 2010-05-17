@@ -53,6 +53,8 @@ EOF;
     sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
 
     $twigEnvironment = new Twig_Environment(new Twig_Loader_String());
+
+    $pcTitleTpl = $twigEnvironment->loadTemplate($pcTemplate['title']);
     $pcTpl = $twigEnvironment->loadTemplate($pcTemplate['template']);
 
     $adminMailAdress = opConfig::get('admin_mail_address');
@@ -89,11 +91,12 @@ EOF;
           'birthMember' => $birthMember,
           'base_url' => sfConfig::get('op_base_url'),
         );
+        $subject = $pcTitleTpl->render($params);
         $body = $pcTpl->render($params);
 
         try
         {
-          $this->sendMail($template['title'], $pcAddress, $adminMailAdress, $body);
+          $this->sendMail($subject, $pcAddress, $adminMailAdress, $body);
         }
         catch(Zend_Mail_Transport_Exception $e)
         {

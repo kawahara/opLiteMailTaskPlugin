@@ -100,7 +100,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
 
   protected function getMailTemplate($env, $templateName, $require = false)
   {
-    // First, load tempalte from DB
+    // First, load tempalte from DB.
     $notificationMailTable = Doctrine::getTable('NotificationMail');
     $connection = $notificationMailTable->getConnection();
     $tableName = $notificationMailTable->getTableName();
@@ -167,6 +167,8 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     {
       $this->transport = $this->getTransport();
     }
+
+    // This code prevents memory leak.
     $this->sendCount++;
     if ($this->sendCount > 100)
     {

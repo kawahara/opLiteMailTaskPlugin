@@ -157,6 +157,7 @@ EOF;
     $sf_config = sfConfig::getAll();
 
     $twigEnvironment = new Twig_Environment(new Twig_Loader_String());
+    $titleTpl = $twigEnvironment->loadTemplate($template['title']);
     $tpl = $twigEnvironment->loadTemplate($template['template']);
 
     sfOpenPNEApplicationConfiguration::registerZend();
@@ -197,11 +198,12 @@ EOF;
         'sf_config' => $sf_config,
       );
 
+      $subject = $titleTpl->render($params);
       $body = $tpl->render($params);
 
       try
       {
-        $this->sendMail($template['title'], $address, $adminMailAdress, $body);
+        $this->sendMail($subject, $address, $adminMailAdress, $body);
       }
       catch (Zend_Mail_Transport_Exception $e)
       {
