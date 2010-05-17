@@ -71,6 +71,7 @@ EOF;
       array($birthday['id'], '%m-%d', $birthDatetime->format('m-d'))
     );
 
+    $sf_config = sfConfig::getAll();
     while ($memberProfile = $memberProfilesStmt->fetch(Doctrine::FETCH_NUM))
     {
       $birthMember = $this->getMember($memberProfile[0]);
@@ -90,6 +91,8 @@ EOF;
           'subject' => $pcTemplate['title'],
           'birthMember' => $birthMember,
           'base_url' => sfConfig::get('op_base_url'),
+          'op_config' => new opConfig(),
+          'sf_config' => $sf_config,
         );
         $subject = $pcTitleTpl->render($params);
         $body = $pcTpl->render($params);
