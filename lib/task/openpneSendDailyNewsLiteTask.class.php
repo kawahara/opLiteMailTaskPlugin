@@ -194,7 +194,6 @@ EOF;
       $params = array(
         'member'    => $member,
         'subject'   => $template['title'],
-        'communityTopics' => array(),
         'diaries'   => $this->getFriendDiaryList($member['id']),
         'communityTopics' => $this->getCommunityTopicList($member['id']),
         'today'     => $today,
