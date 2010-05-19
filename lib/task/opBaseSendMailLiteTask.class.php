@@ -22,6 +22,9 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $transport = null,
     $sendCount = 0,
     $adminMailAddress = null,
+    $tables = array(),
+    $connections = array(),
+    $tableNames = array(),
     $logger = null;
 
   protected function configure()
@@ -56,13 +59,40 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     }
   }
 
+  protected function getTable($modelName)
+  {
+    if (!isset($this->tables[$modelName]))
+    {
+      $this->tables[$modelName] = Doctrine::getTable($modelName);
+    }
+
+    return $this->tables[$modelName];
+  }
+
+  protected function getTableName($modelName)
+  {
+    if (!isset($this->tableNames[$modelName]))
+    {
+      $this->tableNames[$modelName] = $this->getTable($modelName)->getTableName();
+    }
+
+    return $this->tableNames[$modelName];
+  }
+
+  protected function getConnection($modelName)
+  {
+    if (!isset($this->connections[$modelName]))
+    {
+      $this->connections[$modelName] = $this->getTable($modelName)->getConnection();
+    }
+
+    return $this->connections[$modelName];
+  }
+
   protected function getMember($memberId)
   {
-    $memberTable = Doctrine::getTable('Member');
-    $connection = $memberTable->getConnection();
-    $tableName = $memberTable->getTableName();
-
-    return $connection->fetchRow('SELECT id, name FROM '.$tableName.' WHERE (is_active = 1 OR is_active IS NULL) AND id = ?', array($memberId));
+    return $this->getConnection('Member')
+      ->fetchRow('SELECT id, name FROM '.$this->getTableName('Member').' WHERE (is_active = 1 OR is_active IS NULL) AND id = ?', array($memberId));
   }
 
   protected function getInactiveMemberIds()
@@ -72,12 +102,9 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
       return $this->inactiveMemberIds;
     }
 
-    $memberTable = Doctrine::getTable('Member');
-    $connection = $memberTable->getConnection();
-    $tableName = $memberTable->getTableName();
-
     $results = array();
-    $stmt =  $connection->execute('SELECT id FROM '.$tableName.' WHERE is_active = 0');
+    $stmt =  $this->getConnection('Member')
+      ->execute('SELECT id FROM '.$this->getTableName('Member').' WHERE is_active = 0');
     while ($r = $stmt->fetch(Doctrine::FETCH_NUM))
     {
       $results[] = $r[0];
@@ -92,12 +119,8 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $this->getInactiveMemberIds();
 
     $results = array();
-
-    $memberRelationshipTable = Doctrine::getTable('MemberRelationship');
-    $connection = $memberRelationshipTable->getConnection();
-    $tableName = $memberRelationshipTable->getTableName();
-
-    $stmt =  $connection->execute('SELECT member_id_to FROM '.$tableName.' WHERE member_id_from = ? AND is_friend = 1', array($memberId));
+    $stmt = $this->getConnection('MemberRelationship')
+      ->execute('SELECT member_id_to FROM '.$this->getTableName('MemberRelationship').' WHERE member_id_from = ? AND is_friend = 1', array($memberId));
     while ($r = $stmt->fetch(Doctrine::FETCH_NUM))
     {
       if (!in_array($r[0], $this->inactiveMemberIds))
@@ -111,10 +134,8 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
 
   protected function getMemberPcEmailAddress($memberId)
   {
-    $memberConfigTable = Doctrine::getTable('MemberConfig');
-    $connection = $memberConfigTable->getConnection();
-    $tableName = $memberConfigTable->getTableName();
-    $memberConfig = $connection->fetchRow('SELECT value FROM '.$tableName." WHERE name = 'pc_address' AND member_id = ?", array($memberId));
+    $memberConfig = $this->getConnection('MemberConfig')
+      ->fetchRow('SELECT value FROM '.$this->getTableName('MemberConfig')." WHERE name = 'pc_address' AND member_id = ?", array($memberId));
     if ($memberConfig)
     {
       return $memberConfig['value'];
@@ -125,10 +146,8 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
 
   protected function getMemberMobileEmailAddress($memberId)
   {
-    $memberConfigTable = Doctrine::getTable('MemberConfig');
-    $connection = $memberConfigTable->getConnection();
-    $tableName = $memberConfigTable->getTableName();
-    $memberConfig = $connection->fetchRow('SELECT value FROM '.$tableName." WHERE name = 'mobile_address' AND member_id = ?", array($memberId));
+    $memberConfig = $this->getConnection('MemberConfig')
+      ->fetchRow('SELECT value FROM '.$this->getTableName('MemberConfig')." WHERE name = 'mobile_address' AND member_id = ?", array($memberId));
     if ($memberConfig)
     {
       return $memberConfig['value'];
@@ -157,19 +176,14 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
   protected function getMailTemplate($env, $templateName, $require = false)
   {
     // First, load template from DB.
-    $notificationMailTable = Doctrine::getTable('NotificationMail');
-    $connection = $notificationMailTable->getConnection();
-    $tableName = $notificationMailTable->getTableName();
-
-    $notificationMail = $connection->fetchRow('SELECT id FROM '.$tableName.' WHERE name = ?', array($env.'_'.$templateName));
+    $notificationMail = $this->getConnection('NotificationMail')
+      ->fetchRow('SELECT id FROM '.$this->getTableName('NotificationMail').' WHERE name = ?', array($env.'_'.$templateName));
 
     if ($notificationMail)
     {
-      $notificationMailTransTable = Doctrine::getTable('NotificationMailTranslation');
-      $connection = $notificationMailTransTable->getConnection();
-      $tableName = $notificationMailTransTable->getTableName();
-
-      $notificationMailTrans = $connection->fetchRow("SELECT title, template FROM ".$tableName." WHERE id = ? AND lang = 'ja_JP'", array($notificationMail['id']));
+      $notificationMailTrans = $this->getConnection('NotificationMailTranslation')
+        ->fetchRow("SELECT title, template FROM ".$this->getTableName('NotificationMailTranslation')
+        ." WHERE id = ? AND lang = 'ja_JP'", array($notificationMail['id']));
       if ($notificationMailTrans)
       {
         return $notificationMailTrans;

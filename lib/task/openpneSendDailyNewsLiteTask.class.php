@@ -39,17 +39,13 @@ EOF;
       return array();
     }
 
-    $diaryTable = Doctrine::getTable('Diary');
-    $connection = $diaryTable->getConnection();
-    $tableName  = $diaryTable->getTableName();
-
-    $sql = 'SELECT id, member_id, title FROM '.$tableName
+    $sql = 'SELECT id, member_id, title FROM '.$this->getTableName('Diary')
          . ' WHERE member_id IN ('.implode(',', $friendIds). ')'
          . ' AND public_flag IN (1, 2)'
          . ' ORDER BY created_at DESC'
          . ' LIMIT '.$limit;
 
-    $stmt = $connection->execute($sql);
+    $stmt = $this->getConnection('Diary')->execute($sql);
     $results = array();
     while ($r = $stmt->fetch(Doctrine::FETCH_ASSOC))
     {
@@ -62,21 +58,16 @@ EOF;
 
   protected function getCommunity($communityId)
   {
-    $communityTable = Doctrine::getTable('Community');
-    $connection = $communityTable->getConnection();
-    $tableName  = $communityTable->getTableName();
-
-    return $connection->fetchRow('SELECT id, name FROM '.$tableName.' WHERE id = ?', array($communityId));
+    return $this->getConnection('Community')
+      ->fetchRow('SELECT id, name FROM '.$this->getTableName('Community').' WHERE id = ?', array($communityId));
   }
 
   protected function getJoinCommnityIds($memberId)
   {
     $results = array();
 
-    $communityMemberTable = Doctrine::getTable('CommunityMember');
-    $connection = $communityMemberTable->getConnection();
-    $tableName  = $communityMemberTable->getTableName();
-    $stmt =  $connection->execute('SELECT community_id FROM '.$tableName.' WHERE member_id = ? AND is_pre = 0', array($memberId));
+    $stmt =  $this->getConnection('CommunityMember')
+      ->execute('SELECT community_id FROM '.$this->getTableName('CommunityMember').' WHERE member_id = ? AND is_pre = 0', array($memberId));
     while ($r = $stmt->fetch(Doctrine::FETCH_NUM))
     {
       $results[] = $r[0];
@@ -93,16 +84,12 @@ EOF;
       return array();
     }
 
-    $communityTopicTable = Doctrine::getTable('CommunityTopic');
-    $connection = $communityTopicTable->getConnection();
-    $tableName  = $communityTopicTable->getTableName();
-
-    $sql = 'SELECT id, community_id, member_id, name, body FROM '.$tableName
+    $sql = 'SELECT id, community_id, member_id, name, body FROM '.$this->getTableName('CommunityTopic')
          . ' WHERE community_id IN ('.implode(',', $communityIds).')'
          . ' ORDER BY updated_at DESC'
          . ' LIMIT '.$limit;
 
-    $stmt = $connection->execute($sql);
+    $stmt = $this->getConnection('communityTopic')->execute($sql);
     $results = array();
     while ($r = $stmt->fetch(Doctrine::FETCH_ASSOC))
     {
@@ -115,10 +102,8 @@ EOF;
 
   protected function getDailyNewsConfig($memberId)
   {
-    $memberConfigTable = Doctrine::getTable('MemberConfig');
-    $connection = $memberConfigTable->getConnection();
-    $tableName  = $memberConfigTable->getTableName();
-    $result = $connection->fetchRow('SELECT value FROM '.$tableName." WHERE member_id = ? AND name = 'daily_news'", array($memberId));
+    $result = $this->getConnection('MemberConfig')
+      ->fetchRow('SELECT value FROM '.$this->getTableName('MemberConfig')." WHERE member_id = ? AND name = 'daily_news'", array($memberId));
     if ($result)
     {
       return $result['value'];
@@ -149,10 +134,8 @@ EOF;
     // load templates
     list ($titleTpl, $tpl) = $this->getTwigTemplate('pc', 'dailyNews_lite');
 
-    $memberTable = Doctrine::getTable('Member');
-    $connection  = $memberTable->getConnection();
-    $tableName   = $memberTable->getTableName();
-    $stmtMember = $connection->execute('SELECT id, name FROM '.$tableName.' WHERE is_active = 1 OR is_active IS NULL');
+    $stmtMember = $this->getConnection('Member')
+      ->execute('SELECT id, name FROM '.$this->getTableName('Member').' WHERE is_active = 1 OR is_active IS NULL');
 
     $sf_config = sfConfig::getAll();
     $op_config = new opConfig();
@@ -173,7 +156,6 @@ EOF;
       }
 
       $address = $this->getMemberPcEmailAddress($member['id']);
-      $address = 'hogehoge';
       if (!$address)
       {
         continue;
