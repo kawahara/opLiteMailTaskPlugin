@@ -139,7 +139,7 @@ EOF;
     parent::execute($arguments, $options);
     sfContext::createInstance($this->createConfiguration('pc_frontend', 'prod'), 'pc_frontend');
 
-    $adminMailAdress = opConfig::get('admin_mail_address');
+    $adminMailAddress = opConfig::get('admin_mail_address');
     $this->dailyNewsDays = opConfig::get('daily_news_day');
     $today = time();
 
@@ -203,7 +203,7 @@ EOF;
 
       try
       {
-        $this->sendMail($subject, $address, $adminMailAdress, $body);
+        $this->sendMail($subject, $address, $adminMailAddress, $body);
       }
       catch (Zend_Mail_Transport_Exception $e)
       {

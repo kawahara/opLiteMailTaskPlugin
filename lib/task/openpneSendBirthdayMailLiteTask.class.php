@@ -57,7 +57,7 @@ EOF;
     $pcTitleTpl = $twigEnvironment->loadTemplate($pcTemplate['title']);
     $pcTpl = $twigEnvironment->loadTemplate($pcTemplate['template']);
 
-    $adminMailAdress = opConfig::get('admin_mail_address');
+    $adminMailAddress = opConfig::get('admin_mail_address');
 
     sfOpenPNEApplicationConfiguration::registerZend();
 
@@ -99,7 +99,7 @@ EOF;
 
         try
         {
-          $this->sendMail($subject, $pcAddress, $adminMailAdress, $body);
+          $this->sendMail($subject, $pcAddress, $adminMailAddress, $body);
         }
         catch(Zend_Mail_Transport_Exception $e)
         {
