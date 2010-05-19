@@ -42,7 +42,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $connection = $memberTable->getConnection();
     $tableName = $memberTable->getTableName();
 
-    return $connection->fetchRow("SELECT id, name FROM ".$tableName." WHERE (is_active = 1 OR is_active IS NULL) AND id = ?", array($memberId));
+    return $connection->fetchRow('SELECT id, name FROM '.$tableName.' WHERE (is_active = 1 OR is_active IS NULL) AND id = ?', array($memberId));
   }
 
   protected function getInactiveMemberIds()
@@ -94,7 +94,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $memberConfigTable = Doctrine::getTable('MemberConfig');
     $connection = $memberConfigTable->getConnection();
     $tableName = $memberConfigTable->getTableName();
-    $memberConfig = $connection->fetchRow("SELECT value FROM ".$tableName." WHERE name = 'pc_address' AND member_id = ?", array($memberId));
+    $memberConfig = $connection->fetchRow('SELECT value FROM '.$tableName." WHERE name = 'pc_address' AND member_id = ?", array($memberId));
     if ($memberConfig)
     {
       return $memberConfig['value'];
@@ -108,7 +108,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $memberConfigTable = Doctrine::getTable('MemberConfig');
     $connection = $memberConfigTable->getConnection();
     $tableName = $memberConfigTable->getTableName();
-    $memberConfig = $connection->fetchRow("SELECT value FROM ".$tableName." WHERE name = 'mobile_address' AND member_id = ?", array($memberId));
+    $memberConfig = $connection->fetchRow('SELECT value FROM '.$tableName." WHERE name = 'mobile_address' AND member_id = ?", array($memberId));
     if ($memberConfig)
     {
       return $memberConfig['value'];
@@ -141,7 +141,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $connection = $notificationMailTable->getConnection();
     $tableName = $notificationMailTable->getTableName();
 
-    $notificationMail = $connection->fetchRow("SELECT id FROM ".$tableName." WHERE name = ?", array($env.'_'.$templateName));
+    $notificationMail = $connection->fetchRow('SELECT id FROM '.$tableName.' WHERE name = ?', array($env.'_'.$templateName));
 
     if ($notificationMail)
     {

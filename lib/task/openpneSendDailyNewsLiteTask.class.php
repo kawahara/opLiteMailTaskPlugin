@@ -66,7 +66,7 @@ EOF;
     $connection = $communityTable->getConnection();
     $tableName  = $communityTable->getTableName();
 
-    return $connection->fetchRow("SELECT id, name FROM ".$tableName." WHERE id = ?", array($communityId));
+    return $connection->fetchRow('SELECT id, name FROM '.$tableName.' WHERE id = ?', array($communityId));
   }
 
   protected function getJoinCommnityIds($memberId)
@@ -76,7 +76,7 @@ EOF;
     $communityMemberTable = Doctrine::getTable('CommunityMember');
     $connection = $communityMemberTable->getConnection();
     $tableName  = $communityMemberTable->getTableName();
-    $stmt =  $connection->execute("SELECT community_id FROM ".$tableName." WHERE member_id = ? AND is_pre = 0", array($memberId));
+    $stmt =  $connection->execute('SELECT community_id FROM '.$tableName.' WHERE member_id = ? AND is_pre = 0', array($memberId));
     while ($r = $stmt->fetch(Doctrine::FETCH_NUM))
     {
       $results[] = $r[0];
@@ -118,7 +118,7 @@ EOF;
     $memberConfigTable = Doctrine::getTable('MemberConfig');
     $connection = $memberConfigTable->getConnection();
     $tableName  = $memberConfigTable->getTableName();
-    $result = $connection->fetchRow("SELECT value FROM ".$tableName." WHERE member_id = ? AND name = 'daily_news'", array($memberId));
+    $result = $connection->fetchRow('SELECT value FROM '.$tableName." WHERE member_id = ? AND name = 'daily_news'", array($memberId));
     if ($result)
     {
       return $result['value'];
@@ -151,7 +151,7 @@ EOF;
     $memberTable = Doctrine::getTable('Member');
     $connection  = $memberTable->getConnection();
     $tableName   = $memberTable->getTableName();
-    $stmtMember = $connection->execute("SELECT id, name FROM ".$tableName." WHERE is_active = 1 OR is_active IS NULL");
+    $stmtMember = $connection->execute('SELECT id, name FROM '.$tableName.' WHERE is_active = 1 OR is_active IS NULL');
 
     $sf_config = sfConfig::getAll();
     $op_config = new opConfig();
