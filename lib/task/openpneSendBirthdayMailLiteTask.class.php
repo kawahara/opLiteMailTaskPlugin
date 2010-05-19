@@ -34,12 +34,9 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     parent::execute($arguments, $options);
-    sfContext::createInstance($this->createConfiguration('pc_frontend', 'prod'), 'pc_frontend');
 
     // load templates
-    $pcTemplate     = $this->getMailTemplate('pc', 'birthday_lite', true);
-    $pcSignature    = $this->getMailTemplate('pc', 'signature');
-    $pcTemplate['template'] = $pcTemplate['template']."\n".$pcSignature['template'];
+    list($pcTitleTpl, $pcTpl) = $this->getTwigTemplate('pc', 'birthday_lite');
 
     $profileTable = Doctrine::getTable('Profile');
     $connection = $profileTable->getConnection();
@@ -49,17 +46,6 @@ EOF;
     {
       throw new sfException('This project doesn\'t have the op_preset_birthday profile item.');
     }
-    $helpers = array_unique(array_merge(array('Helper', 'Url', 'Asset', 'Tag', 'Escaping'), sfConfig::get('sf_standard_helpers')));
-    sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
-
-    $twigEnvironment = new Twig_Environment(new Twig_Loader_String());
-
-    $pcTitleTpl = $twigEnvironment->loadTemplate($pcTemplate['title']);
-    $pcTpl = $twigEnvironment->loadTemplate($pcTemplate['template']);
-
-    $adminMailAddress = opConfig::get('admin_mail_address');
-
-    sfOpenPNEApplicationConfiguration::registerZend();
 
     $birthDatetime = new DateTime();
     $birthDatetime->modify('+ 1 week');
@@ -72,6 +58,8 @@ EOF;
     );
 
     $sf_config = sfConfig::getAll();
+    $op_config = new opConfig();
+
     while ($memberProfile = $memberProfilesStmt->fetch(Doctrine::FETCH_NUM))
     {
       $birthMember = $this->getMember($memberProfile[0]);
@@ -91,7 +79,7 @@ EOF;
           'subject' => $pcTemplate['title'],
           'birthMember' => $birthMember,
           'base_url' => sfConfig::get('op_base_url'),
-          'op_config' => new opConfig(),
+          'op_config' => $op_config,
           'sf_config' => $sf_config,
         );
         $subject = $pcTitleTpl->render($params);
@@ -99,7 +87,7 @@ EOF;
 
         try
         {
-          $this->sendMail($subject, $pcAddress, $adminMailAddress, $body);
+          $this->sendMail($subject, $pcAddress, $this->adminMailAddress, $body);
         }
         catch(Zend_Mail_Transport_Exception $e)
         {

@@ -141,35 +141,21 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     parent::execute($arguments, $options);
-    sfContext::createInstance($this->createConfiguration('pc_frontend', 'prod'), 'pc_frontend');
 
-    $adminMailAddress = opConfig::get('admin_mail_address');
     $this->dailyNewsDays = opConfig::get('daily_news_day');
     $today = time();
 
-    // load tempaltes
-    $template = $this->getMailTemplate('pc', 'dailyNews_lite', true);
-    $signature = $this->getMailTemplate('pc', 'signature');
-    if ($signature)
-    {
-      $template['template'] =  $template['template']."\n".$signature['template'];
-    }
-
-    $helpers = array_unique(array_merge(array('Helper', 'Url', 'Asset', 'Tag', 'Escaping'), sfConfig::get('sf_standard_helpers')));
-    sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
-
-    $sf_config = sfConfig::getAll();
-
-    $twigEnvironment = new Twig_Environment(new Twig_Loader_String());
-    $titleTpl = $twigEnvironment->loadTemplate($template['title']);
-    $tpl = $twigEnvironment->loadTemplate($template['template']);
-
-    sfOpenPNEApplicationConfiguration::registerZend();
+    // load templates
+    list ($titleTpl, $tpl) = $this->getTwigTemplate('pc', 'dailyNews_lite');
 
     $memberTable = Doctrine::getTable('Member');
     $connection  = $memberTable->getConnection();
     $tableName   = $memberTable->getTableName();
     $stmtMember = $connection->execute("SELECT id, name FROM ".$tableName." WHERE is_active = 1 OR is_active IS NULL");
+
+    $sf_config = sfConfig::getAll();
+    $op_config = new opConfig();
+
     while ($member = $stmtMember->fetch(Doctrine::FETCH_ASSOC))
     {
       $config = $this->getDailyNewsConfig($member['id']);
@@ -197,7 +183,7 @@ EOF;
         'diaries'   => $this->getFriendDiaryList($member['id']),
         'communityTopics' => $this->getCommunityTopicList($member['id']),
         'today'     => $today,
-        'op_config' => new opConfig(),
+        'op_config' => $op_config,
         'sf_config' => $sf_config,
       );
 
@@ -206,7 +192,7 @@ EOF;
 
       try
       {
-        $this->sendMail($subject, $address, $adminMailAddress, $body);
+        $this->sendMail($subject, $address, $this->adminMailAddress, $body);
       }
       catch (Zend_Mail_Transport_Exception $e)
       {

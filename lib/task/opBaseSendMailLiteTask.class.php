@@ -20,7 +20,21 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
   protected
     $inactiveMemberIds = null,
     $transport = null,
-    $sendCount = 0;
+    $sendCount = 0,
+    $adminMailAddress = null;
+
+  protected function execute($arguments = array(), $options = array())
+  {
+    parent::execute($arguments, $options);
+
+    sfContext::createInstance($this->createConfiguration('pc_frontend', 'prod'), 'pc_frontend');
+    sfOpenPNEApplicationConfiguration::registerZend();
+
+    $this->adminMailAddress = opConfig::get('admin_mail_address');
+
+    $helpers = array_unique(array_merge(array('Helper', 'Url', 'Asset', 'Tag', 'Escaping'), sfConfig::get('sf_standard_helpers')));
+    sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
+  }
 
   protected function getMember($memberId)
   {
@@ -103,9 +117,26 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     return false;
   }
 
+  protected function getTwigTemplate($env, $templateName, $isSignature = true)
+  {
+    $template = $this->getMailTemplate($env, $templateName, true);
+    if ($isSignature)
+    {
+      $signature = $this->getMailTemplate($env, 'signature');
+      $template['template'] = $template['template']."\n".$signature['template'];
+    }
+
+    $twigEnvironment = new Twig_Environment(new Twig_Loader_String());
+
+    return array(
+      $twigEnvironment->loadTemplate($template['title']),
+      $twigEnvironment->loadTemplate($template['template'])
+    );
+  }
+
   protected function getMailTemplate($env, $templateName, $require = false)
   {
-    // First, load tempalte from DB.
+    // First, load template from DB.
     $notificationMailTable = Doctrine::getTable('NotificationMail');
     $connection = $notificationMailTable->getConnection();
     $tableName = $notificationMailTable->getTableName();
