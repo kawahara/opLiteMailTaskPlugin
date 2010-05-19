@@ -21,7 +21,14 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $inactiveMemberIds = null,
     $transport = null,
     $sendCount = 0,
-    $adminMailAddress = null;
+    $adminMailAddress = null,
+    $logger = null;
+
+  protected function configure()
+  {
+    parent::configure();
+    $this->addOption('log-file', 'l', sfCommandOption::PARAMETER_OPTIONAL, 'The path of log file', null);
+  }
 
   protected function execute($arguments = array(), $options = array())
   {
@@ -34,6 +41,19 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
 
     $helpers = array_unique(array_merge(array('Helper', 'Url', 'Asset', 'Tag', 'Escaping'), sfConfig::get('sf_standard_helpers')));
     sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
+
+    if (null !== $options['log-file'])
+    {
+      $this->logger = new sfFileLogger($this->dispatcher, array('file' => $options['log-file']));
+    }
+  }
+
+  protected function mailLog($message, $priority = sfLogger::INFO)
+  {
+    if (null !== $this->logger)
+    {
+      $this->logger->log($message, $priority);
+    }
   }
 
   protected function getMember($memberId)

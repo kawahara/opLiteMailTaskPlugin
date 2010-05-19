@@ -34,6 +34,7 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     parent::execute($arguments, $options);
+    $this->mailLog('starting openpne:send-birthday-mail-lite task');
 
     // load templates
     list($pcTitleTpl, $pcTpl) = $this->getTwigTemplate('pc', 'birthday_lite');
@@ -88,11 +89,16 @@ EOF;
         try
         {
           $this->sendMail($subject, $pcAddress, $this->adminMailAddress, $body);
+          $this->mailLog(sprintf("sent member %d birthday notification mail to member %d (usage memory:%s bytes)",
+            $birthMember['id'], $member['id'], number_format(memory_get_usage()))
+          );
         }
-        catch(Zend_Mail_Transport_Exception $e)
+        catch(Zend_Mil_Transport_Exception $e)
         {
+          $this->mailLog(sprintf("%s (about member %d birthday to member %d)",$e->getMessage(), $birthMember['id'], $member['id']));
         }
       }
     }
+    $this->mailLog('end openpne:send-birthday-mail-lite task');
   }
 }

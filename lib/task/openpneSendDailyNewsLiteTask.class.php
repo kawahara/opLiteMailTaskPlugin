@@ -141,6 +141,7 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     parent::execute($arguments, $options);
+    $this->mailLog('starting openpne:send-daily-news-lite task');
 
     $this->dailyNewsDays = opConfig::get('daily_news_day');
     $today = time();
@@ -156,11 +157,12 @@ EOF;
     $sf_config = sfConfig::getAll();
     $op_config = new opConfig();
 
+    $isDailyNewsDay = $this->isDailyNewsDay();
+
     while ($member = $stmtMember->fetch(Doctrine::FETCH_ASSOC))
     {
       $config = $this->getDailyNewsConfig($member['id']);
-
-      if (1 == $config && !$this->isDailyNewsDay())
+      if (1 == $config && !$isDailyNewsDay)
       {
         continue;
       }
@@ -171,7 +173,7 @@ EOF;
       }
 
       $address = $this->getMemberPcEmailAddress($member['id']);
-
+      $address = 'hogehoge';
       if (!$address)
       {
         continue;
@@ -193,10 +195,13 @@ EOF;
       try
       {
         $this->sendMail($subject, $address, $this->adminMailAddress, $body);
+        $this->mailLog(sprintf("sent daily news to member %d (usage memory:%s bytes)", $member['id'], number_format(memory_get_usage())));
       }
       catch (Zend_Mail_Transport_Exception $e)
       {
+        $this->mailLog(sprintf("%s (member %d)",$e->getMessage(), $member['id']), sfLogger::ERR);
       }
     }
+    $this->mailLog('end openpne:send-daily-news-lite task');
   }
 }
