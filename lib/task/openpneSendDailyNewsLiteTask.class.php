@@ -56,6 +56,7 @@ EOF;
       $r['member'] = $this->getMember($r['member_id']);
       $results[] = $r;
     }
+
     return $results;
   }
 
@@ -64,6 +65,7 @@ EOF;
     $communityTable = Doctrine::getTable('Community');
     $connection = $communityTable->getConnection();
     $tableName  = $communityTable->getTableName();
+
     return $connection->fetchRow("SELECT id, name FROM ".$tableName." WHERE id = ?", array($communityId));
   }
 
@@ -79,6 +81,7 @@ EOF;
     {
       $results[] = $r[0];
     }
+
     return $results;
   }
 
@@ -106,6 +109,7 @@ EOF;
       $r['community'] = $this->getCommunity($r['community_id']);
       $results[] = $r;
     }
+
     return $results;
   }
 

@@ -27,6 +27,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $memberTable = Doctrine::getTable('Member');
     $connection = $memberTable->getConnection();
     $tableName = $memberTable->getTableName();
+
     return $connection->fetchRow("SELECT id, name FROM ".$tableName." WHERE (is_active = 1 OR is_active IS NULL) AND id = ?", array($memberId));
   }
 
@@ -48,6 +49,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
       $results[] = $r[0];
     }
     $this->inactiveMemberIds = $results;
+
     return $results;
   }
 
@@ -69,6 +71,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
         $results[] = $r[0];
       }
     }
+
     return $results;
   }
 
@@ -82,6 +85,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     {
       return $memberConfig['value'];
     }
+
     return false;
   }
 
@@ -95,6 +99,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     {
       return $memberConfig['value'];
     }
+
     return false;
   }
 
@@ -158,6 +163,7 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     {
       $transport = new Zend_Mail_Transport_Sendmail();
     }
+
     return $transport;
   }
 
