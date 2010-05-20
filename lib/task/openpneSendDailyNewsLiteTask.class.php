@@ -45,7 +45,7 @@ EOF;
          . ' ORDER BY created_at DESC'
          . ' LIMIT '.$limit;
 
-    $stmt = $this->getConnection('Diary')->execute($sql);
+    $stmt = $this->executeQuery($sql);
     $results = array();
     while ($r = $stmt->fetch(Doctrine::FETCH_ASSOC))
     {
@@ -58,16 +58,14 @@ EOF;
 
   protected function getCommunity($communityId)
   {
-    return $this->getConnection('Community')
-      ->fetchRow('SELECT id, name FROM '.$this->getTableName('Community').' WHERE id = ?', array($communityId));
+    return $this->fetchRow('SELECT id, name FROM '.$this->getTableName('Community').' WHERE id = ?', array($communityId));
   }
 
   protected function getJoinCommnityIds($memberId)
   {
     $results = array();
 
-    $stmt =  $this->getConnection('CommunityMember')
-      ->execute('SELECT community_id FROM '.$this->getTableName('CommunityMember').' WHERE member_id = ? AND is_pre = 0', array($memberId));
+    $stmt =  $this->executeQuery('SELECT community_id FROM '.$this->getTableName('CommunityMember').' WHERE member_id = ? AND is_pre = 0', array($memberId));
     while ($r = $stmt->fetch(Doctrine::FETCH_NUM))
     {
       $results[] = $r[0];
@@ -89,7 +87,7 @@ EOF;
          . ' ORDER BY updated_at DESC'
          . ' LIMIT '.$limit;
 
-    $stmt = $this->getConnection('communityTopic')->execute($sql);
+    $stmt = $this->executeQuery($sql);
     $results = array();
     while ($r = $stmt->fetch(Doctrine::FETCH_ASSOC))
     {
@@ -102,8 +100,8 @@ EOF;
 
   protected function getDailyNewsConfig($memberId)
   {
-    $result = $this->getConnection('MemberConfig')
-      ->fetchRow('SELECT value FROM '.$this->getTableName('MemberConfig')." WHERE member_id = ? AND name = 'daily_news'", array($memberId));
+    $result = $this->fetchRow("SELECT value FROM member_config WHERE member_id = ? AND name = 'daily_news'", array($memberId));
+
     if ($result)
     {
       return $result['value'];
@@ -134,8 +132,7 @@ EOF;
     // load templates
     list ($titleTpl, $tpl) = $this->getTwigTemplate('pc', 'dailyNews_lite');
 
-    $stmtMember = $this->getConnection('Member')
-      ->execute('SELECT id, name FROM '.$this->getTableName('Member').' WHERE is_active = 1 OR is_active IS NULL');
+    $stmtMember = $this->executeQuery('SELECT id, name FROM '.$this->getTableName('Member').' WHERE is_active = 1 OR is_active IS NULL');
 
     $sf_config = sfConfig::getAll();
     $op_config = new opConfig();

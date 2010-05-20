@@ -39,10 +39,7 @@ EOF;
     // load templates
     list($pcTitleTpl, $pcTpl) = $this->getTwigTemplate('pc', 'birthday_lite');
 
-    $profileTable = Doctrine::getTable('Profile');
-    $connection = $profileTable->getConnection();
-    $tableName = $profileTable->getTableName();
-    $birthday = $connection->fetchRow('SELECT id FROM '.$tableName.' WHERE name = ?', array('op_preset_birthday'));
+    $birthday = $this->fetchRow('SELECT id FROM '.$this->getTableName('Profile').' WHERE name = ?', array('op_preset_birthday'));
     if (!$birthday)
     {
       throw new sfException('This project doesn\'t have the op_preset_birthday profile item.');
@@ -51,10 +48,7 @@ EOF;
     $birthDatetime = new DateTime();
     $birthDatetime->modify('+ 1 week');
 
-    $memberProfileTable = Doctrine::getTable('MemberProfile');
-    $connection = $memberProfileTable->getConnection();
-    $tableName  = $memberProfileTable->getTableName();
-    $memberProfilesStmt = $connection->execute('SELECT member_id FROM '.$tableName.' WHERE profile_id = ? AND DATE_FORMAT(value_datetime, ?) = ?',
+    $memberProfilesStmt = $this->executeQuery('SELECT member_id FROM '.$this->getTableName('MemberProfile').' WHERE profile_id = ? AND DATE_FORMAT(value_datetime, ?) = ?',
       array($birthday['id'], '%m-%d', $birthDatetime->format('m-d'))
     );
 
@@ -77,9 +71,7 @@ EOF;
 
         $params = array(
           'member' => $member,
-          'subject' => $pcTemplate['title'],
           'birthMember' => $birthMember,
-          'base_url' => sfConfig::get('op_base_url'),
           'op_config' => $op_config,
           'sf_config' => $sf_config,
         );
