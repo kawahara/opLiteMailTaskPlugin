@@ -5,7 +5,7 @@
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>opLiteMailTaskPlugin</name>
  <channel>plugins.openpne.jp</channel>
- <summary>This plugin contains some mail tasks that is lighter than task of OpenPNE3. </summary>
+ <summary>opLiteMailTaskPlugin</summary>
  <description>This plugin contains some mail tasks that is lighter than task of OpenPNE3. </description>
  <lead>
   <name>Shogo Kawahara</name>
@@ -13,11 +13,11 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-05-17</date>
- <time>21:13:50</time>
+ <date>2010-05-20</date>
+ <time>22:08:43</time>
  <version>
-  <release>0.9.0</release>
-  <api>0.9.0</api>
+  <release>0.9.1</release>
+  <api>0.9.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -25,7 +25,7 @@
  </stability>
  <license>Apache</license>
  <notes>
-First release.
+Fixed memory leaks.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -33,9 +33,9 @@ First release.
    <file baseinstalldir="/" md5sum="a5ec79fb2ffc4f71b56e6dd890c18cc7" name="bin/send_daily_news.cron" role="data" />
    <file baseinstalldir="/" md5sum="6c110cba30d9d94cc09d20ea38deed41" name="config/mail_template.yml" role="data" />
    <file baseinstalldir="/" md5sum="21f6c7cc640bd6f2a1785914088ea0b7" name="doc/ja/setup.txt" role="data" />
-   <file baseinstalldir="/" md5sum="bfbbb8fc4825c0bce66964fff2eb8ca8" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="6951891206930633ca377b63b74c2e63" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="df72aa2ab4185b9a52757f9b50958c89" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="41b06518e613ba20055a378f54b3ea66" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="384cd57843e79a0b77b810662bef18aa" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="4738e86bfc08453ec201299dae0619cb" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
    <file baseinstalldir="/" md5sum="b3b449ce95b8d182e98b55f6fcd87131" name="README" role="data" />
   </dir>
@@ -65,6 +65,21 @@ First release.
    <license>Apache</license>
    <notes>
 First release.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.1</release>
+    <api>0.9.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-05-20</date>
+   <license>Apache</license>
+   <notes>
+Fixed memory leaks.
    </notes>
   </release>
  </changelog>
