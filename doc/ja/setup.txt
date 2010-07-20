@@ -15,7 +15,7 @@ opLiteMailTaskPluginは、機能限定になるものの OpenPNE3に含まれる
 動作環境
 --------
 
-正常に動作させるためにはOpenPNE3.4以上を導入する必要があります。
+正常に動作させるためにはOpenPNE3.4以上に、このプラグインをインストールがあります。
 
 また、デイリーニュースを利用する場合はOpenPNE3のが必要とする環境に加えて以下の条件を満たす必要があります。
 
@@ -101,3 +101,22 @@ opLiteMailTaskPluginに含まれる各タスクはログを残すことができ
   00 6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron /path/to/OpenPNE3 /path/to/php "--start-member-id=100 --end-member-id=200"
 
 *--start-member-id* は省略した場合に1、 *--end-member-id* は省略した場合、SNSに存在する最大のメンバーIDになります。
+
+
+メール件名の設定
+~~~~~~~~~~~~~~~~
+
+opLiteMailTaskPluginに含まれる各タスクはメール件名を変更することができます。
+
+上記のデイリーニュース送信について件名を指定する場合は /etc/crontab の send_daily_news.cron 実行についてを以下のように変更します。
+
+::
+
+  00 6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron /path/to/OpenPNE3 /path/to/php "--subject=日報"
+
+指定しない場合は以下になります。
+
+デイリーニュース (Lite)
+  {{ op_config.sns_name }}デイリーニュース
+フレンド誕生日お知らせメール (Lite)
+  {{ member.name }} さんのフレンドに誕生日の近い方がいます！
