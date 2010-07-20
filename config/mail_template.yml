@@ -3,9 +3,7 @@ pc:
     caption: "Daily News (Lite)"
     configurable: false
     sample:
-      ja_JP:
-        - "{{ op_config.sns_name }}デイリーニュース"
-        - |
+      ja_JP: |
           {{ member.name }}さん、こんにちは。
           
           {{ op_config.sns_name }}からのお知らせです。
@@ -46,9 +44,7 @@ pc:
     caption: "Notification of Friend Birthday (Lite)"
     configurable: false
     sample:
-      ja_JP:
-        - "{{ member.name }} さんのフレンドに誕生日の近い方がいます！"
-        - |
+      ja_JP: |
           {{ member.name }} さんのマイフレンドに誕生日の近い方がいます！
           日ごろの感謝をこめて、誕生日の日にお祝いのメッセージを送ってみてはいかがですか。
           
