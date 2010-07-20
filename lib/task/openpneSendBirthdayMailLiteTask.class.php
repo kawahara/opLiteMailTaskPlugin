@@ -23,6 +23,10 @@ class openpneSendBirthdayMailLiteTask extends opBaseSendMailLiteTask
     $this->namespace        = 'openpne';
     $this->name             = 'send-birthday-mail-lite';
     $this->briefDescription = '';
+    $this->addOptions(array(
+      new sfCommandOption('start-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'Start member id', null),
+      new sfCommandOption('end-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'End member id', null),
+    ));
     $this->detailedDescription = <<<EOF
 The [openpne:send-birthday-mail|INFO] task does things.
 Call it with:
@@ -48,46 +52,59 @@ EOF;
     $birthDatetime = new DateTime();
     $birthDatetime->modify('+ 1 week');
 
-    $memberProfilesStmt = $this->executeQuery('SELECT member_id FROM '.$this->getTableName('MemberProfile').' WHERE profile_id = ? AND DATE_FORMAT(value_datetime, ?) = ?',
-      array($birthday['id'], '%m-%d', $birthDatetime->format('m-d'))
-    );
-
-    $sf_config = sfConfig::getAll();
-    $op_config = new opConfig();
-
-    while ($memberProfile = $memberProfilesStmt->fetch(Doctrine::FETCH_NUM))
+    $query = 'SELECT member_id FROM '.$this->getTableName('MemberProfile').' WHERE profile_id = ? AND DATE_FORMAT(value_datetime, ?) = ?';
+    $params = array($birthday['id'], '%m-%d', $birthDatetime->format('m-d'));
+    if (null !== $options['start-member-id'] && is_numeric($options['start-member-id']))
     {
-      $birthMember = $this->getMember($memberProfile[0]);
-      $birthMember['birthday'] = $birthDatetime->format('U');
-      $ids = $this->getFriendIds($memberProfile[0]);
-      foreach ($ids as $id)
+      $query .= ' AND member_id >= ?';
+      $params[] = $options['start-member-id'];
+    }
+    if (null !== $options['end-member-id'] && is_numeric($options['end-member-id']))
+    {
+      $query .= ' AND member_id <= ?';
+      $params[] = $options['end-member-id'];
+    }
+
+    $memberProfilesStmt = $this->executeQuery($query);
+    if ($memberProfilesStmt instanceof PDOStatement)
+    {
+      $sf_config = sfConfig::getAll();
+      $op_config = new opConfig();
+
+      while ($memberProfile = $memberProfilesStmt->fetch(Doctrine::FETCH_NUM))
       {
-        $member = $this->getMember($id);
-        $pcAddress = $this->getMemberPcEmailAddress($id);
-        if (!$pcAddress)
+        $birthMember = $this->getMember($memberProfile[0]);
+        $birthMember['birthday'] = $birthDatetime->format('U');
+        $ids = $this->getFriendIds($memberProfile[0]);
+        foreach ($ids as $id)
         {
-          continue;
-        }
+          $member = $this->getMember($id);
+          $pcAddress = $this->getMemberPcEmailAddress($id);
+          if (!$pcAddress)
+          {
+            continue;
+          }
 
-        $params = array(
-          'member' => $member,
-          'birthMember' => $birthMember,
-          'op_config' => $op_config,
-          'sf_config' => $sf_config,
-        );
-        $subject = $pcTitleTpl->render($params);
-        $body = $pcTpl->render($params);
-
-        try
-        {
-          $this->sendMail($subject, $pcAddress, $this->adminMailAddress, $body);
-          $this->mailLog(sprintf("sent member %d birthday notification mail to member %d (usage memory:%s bytes)",
-            $birthMember['id'], $member['id'], number_format(memory_get_usage()))
+          $params = array(
+            'member' => $member,
+            'birthMember' => $birthMember,
+            'op_config' => $op_config,
+            'sf_config' => $sf_config,
           );
-        }
-        catch(Zend_Mil_Transport_Exception $e)
-        {
-          $this->mailLog(sprintf("%s (about member %d birthday to member %d)",$e->getMessage(), $birthMember['id'], $member['id']));
+          $subject = $pcTitleTpl->render($params);
+          $body = $pcTpl->render($params);
+
+          try
+          {
+            $this->sendMail($subject, $pcAddress, $this->adminMailAddress, $body);
+            $this->mailLog(sprintf("sent member %d birthday notification mail to member %d (usage memory:%s bytes)",
+              $birthMember['id'], $member['id'], number_format(memory_get_usage()))
+            );
+          }
+          catch(Zend_Mil_Transport_Exception $e)
+          {
+            $this->mailLog(sprintf("%s (about member %d birthday to member %d)",$e->getMessage(), $birthMember['id'], $member['id']));
+          }
         }
       }
     }

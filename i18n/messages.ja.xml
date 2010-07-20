@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en" datatype="plaintext">
+    <body>
+      <trans-unit id="">
+        <source>Daily News (Lite)</source>
+        <target>デイリーニュース (Lite)</target>
+      </trans-unit>
+      <trans-unit id="">
+        <source>Notification of Friend Birthday (Lite)</source>
+        <target>フレンド誕生日お知らせメール (Lite)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -2,6 +2,9 @@
 セットアップガイド
 ==================
 
+:Author: Shogo Kawahara <kawahara@bucyou.net>
+:Date: 2010-07-20
+
 はじめに
 ========
 
@@ -12,9 +15,9 @@ opLiteMailTaskPluginは、機能限定になるものの OpenPNE3に含まれる
 動作環境
 --------
 
-OpenPNE3.4.x以上である必要があります。(OpenPNE3.5.x以上を推奨)
+正常に動作させるためにはOpenPNE3.6以上に導入する必要があります。
 
-デイリーニュースを利用する場合はOpenPNE3のが必要とする環境に加えて以下の条件を満たす必要があります。
+また、デイリーニュースを利用する場合はOpenPNE3のが必要とする環境に加えて以下の条件を満たす必要があります。
 
 * opDiaryPluginの導入 (デフォルトバンドル)
 * opCommunityTopicPluginの導入 (デフォルトバンドル)
@@ -31,8 +34,7 @@ OpenPNEのプロジェクトディレクトリで以下のコマンドを実行�
 
 ::
 
-./symfony opPlugin:install opLiteMailTaskPlugin -s beta
-
+  ./symfony opPlugin:install opLiteMailTaskPlugin -s beta
 
 
 メール配信設定
@@ -54,10 +56,11 @@ plugins/opLiteMailTaskPlugin/bin/* のcron ファイルに設定権限を付加�
 ::
 
   # 6 時に /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron というスクリプトを /path/to/php で実行することで /path/to/OpenPNE3 のデイリー・ニュースを配信する
-  00   6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron /path/to/OpenPNE3 /path/to/php
+  00 6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron /path/to/OpenPNE3 /path/to/php
 
   # 6 時に /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_birthday_mail.cron というスクリプトを /path/to/php で実行することで /path/to/OpenPNE3 の誕生日通知メールを配信する
-  00   6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_birthday_mail.cron /path/to/OpenPNE3 /path/to/php
+  00 6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_birthday_mail.cron /path/to/OpenPNE3 /path/to/php
+
 
 テンプレートの変更
 ~~~~~~~~~~~~~~~~~~
@@ -66,9 +69,35 @@ plugins/opLiteMailTaskPlugin/bin/* のcron ファイルに設定権限を付加�
 
 このプラグインに関係のあるテンプレートは以下になります。
 
-Daily News (Lite)
+デイリーニュース (Lite)
   このプラグインのタスクにより送信されるデイリー・ニュースのテンプレート
-Notification of Friend Birthday (Lite)
+フレンド誕生日お知らせメール (Lite)
   このプラグインのタスクにより送信される誕生日お知らせメールのテンプレート
 署名
   デイリー・ニュースおよび誕生日お知らせメールの最後に付加される署名
+
+ログの記録
+~~~~~~~~~~
+
+opLiteMailTaskPluginに含まれる各タスクはログを残すことができます。
+
+上記のデイリーニュース送信についてログをこのす場合は /etc/crontab の send_daily_news.cron 実行についてを以下のように変更します。
+
+::
+
+  00 6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron /path/to/OpenPNE3 /path/to/php "--log-file=/tmp/daily_news.log"
+
+メンバーID範囲の指定
+~~~~~~~~~~~~~~~~~~~~
+
+デイリーニュースは送信するメンバーIDの範囲を、誕生日お知らせメールは誕生日をチェックするメンバーIDの範囲を指定することができます。
+
+上記のデイリーニュース送信についてメンバーIDの範囲を指定する場合は /etc/crontab の send_daily_news.cron 実行についてを以下のように変更します。
+
+メンバーID 100〜200のメンバーにデイリーニュースを送信する場合は以下のようになります。
+
+::
+
+  00 6 * * * root sh /path/to/OpenPNE3/plugins/opLiteMailTaskPlugin/bin/send_daily_news.cron /path/to/OpenPNE3 /path/to/php "--start-member-id=100 --end-member-id=200"
+
+*--start-member-id* は省略した場合に1、 *--end-member-id* は省略した場合、SNSに存在する最大のメンバーIDになります。

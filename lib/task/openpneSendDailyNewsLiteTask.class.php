@@ -23,6 +23,10 @@ class openpneSendDailyNewsLiteTask extends opBaseSendMailLiteTask
     $this->namespace        = 'openpne';
     $this->name             = 'send-daily-news-lite';
     $this->briefDescription = '';
+    $this->addOptions(array(
+      new sfCommandOption('start-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'Start member id', null),
+      new sfCommandOption('end-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'End member id', null),
+    ));
     $this->detailedDescription = <<<EOF
 The [openpne:send-daily-news-lite|INFO] task does things.
 Call it with:
@@ -132,53 +136,68 @@ EOF;
     // load templates
     list ($titleTpl, $tpl) = $this->getTwigTemplate('pc', 'dailyNews_lite');
 
-    $stmtMember = $this->executeQuery('SELECT id, name FROM '.$this->getTableName('Member').' WHERE is_active = 1 OR is_active IS NULL');
-
-    $sf_config = sfConfig::getAll();
-    $op_config = new opConfig();
-
-    $isDailyNewsDay = $this->isDailyNewsDay();
-
-    while ($member = $stmtMember->fetch(Doctrine::FETCH_ASSOC))
+    $query = 'SELECT id, name FROM '.$this->getTableName('Member').' WHERE (is_active = 1 OR is_active IS NULL)';
+    $params = array();
+    if (null !== $options['start-member-id'] && is_numeric($options['start-member-id']))
     {
-      $config = $this->getDailyNewsConfig($member['id']);
-      if (1 == $config && !$isDailyNewsDay)
-      {
-        continue;
-      }
+      $query .= ' AND id >= ?';
+      $params[] = $options['start-member-id'];
+    }
+    if (null !== $options['end-member-id'] && is_numeric($options['end-member-id']))
+    {
+      $query .= ' AND id <= ?';
+      $params[] = $options['end-member-id'];
+    }
 
-      if (false !== $config && !$config)
-      {
-        continue;
-      }
+    $stmtMember = $this->executeQuery($query, $params);
+    if ($stmtMember instanceof PDOStatement)
+    {
+      $sf_config = sfConfig::getAll();
+      $op_config = new opConfig();
 
-      $address = $this->getMemberPcEmailAddress($member['id']);
-      if (!$address)
-      {
-        continue;
-      }
+      $isDailyNewsDay = $this->isDailyNewsDay();
 
-      $params = array(
-        'member'    => $member,
-        'subject'   => $template['title'],
-        'diaries'   => $this->getFriendDiaryList($member['id']),
-        'communityTopics' => $this->getCommunityTopicList($member['id']),
-        'today'     => $today,
-        'op_config' => $op_config,
-        'sf_config' => $sf_config,
-      );
-
-      $subject = $titleTpl->render($params);
-      $body = $tpl->render($params);
-
-      try
+      while ($member = $stmtMember->fetch(Doctrine::FETCH_ASSOC))
       {
-        $this->sendMail($subject, $address, $this->adminMailAddress, $body);
-        $this->mailLog(sprintf("sent daily news to member %d (usage memory:%s bytes)", $member['id'], number_format(memory_get_usage())));
-      }
-      catch (Zend_Mail_Transport_Exception $e)
-      {
-        $this->mailLog(sprintf("%s (member %d)",$e->getMessage(), $member['id']), sfLogger::ERR);
+        $config = $this->getDailyNewsConfig($member['id']);
+        if (1 == $config && !$isDailyNewsDay)
+        {
+          continue;
+        }
+
+        if (false !== $config && !$config)
+        {
+          continue;
+        }
+
+        $address = $this->getMemberPcEmailAddress($member['id']);
+        if (!$address)
+        {
+          continue;
+        }
+
+        $params = array(
+          'member'    => $member,
+          'subject'   => $template['title'],
+          'diaries'   => $this->getFriendDiaryList($member['id']),
+          'communityTopics' => $this->getCommunityTopicList($member['id']),
+          'today'     => $today,
+          'op_config' => $op_config,
+          'sf_config' => $sf_config,
+        );
+
+        $subject = $titleTpl->render($params);
+        $body = $tpl->render($params);
+
+        try
+        {
+          $this->sendMail($subject, $address, $this->adminMailAddress, $body);
+          $this->mailLog(sprintf("sent daily news to member %d (usage memory:%s bytes)", $member['id'], number_format(memory_get_usage())));
+        }
+        catch (Zend_Mail_Transport_Exception $e)
+        {
+          $this->mailLog(sprintf("%s (member %d)",$e->getMessage(), $member['id']), sfLogger::ERR);
+        }
       }
     }
     $this->mailLog('end openpne:send-daily-news-lite task');
