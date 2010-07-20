@@ -13,29 +13,31 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-05-20</date>
- <time>22:08:43</time>
+ <date>2010-07-20</date>
+ <time>15:38:53</time>
  <version>
-  <release>0.9.1</release>
-  <api>0.9.1</api>
+  <release>1.2.0</release>
+  <api>1.2.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license>Apache</license>
  <notes>
-Fixed memory leaks.
+Added an ability to set range of member-id.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="/" md5sum="db473a19596d31b8eaa2be30913b1e85" name="bin/send_birthday_mail.cron" role="data" />
-   <file baseinstalldir="/" md5sum="a5ec79fb2ffc4f71b56e6dd890c18cc7" name="bin/send_daily_news.cron" role="data" />
+   <file baseinstalldir="/" md5sum="c420bad45de6b138623d0d565b481c28" name="bin/send_birthday_mail.cron" role="data" />
+   <file baseinstalldir="/" md5sum="3af344b9691555daa3500f98e9447124" name="bin/send_daily_news.cron" role="data" />
    <file baseinstalldir="/" md5sum="6c110cba30d9d94cc09d20ea38deed41" name="config/mail_template.yml" role="data" />
-   <file baseinstalldir="/" md5sum="21f6c7cc640bd6f2a1785914088ea0b7" name="doc/ja/setup.txt" role="data" />
+   <file baseinstalldir="/" md5sum="5ddd667c24cec9e19ffba53ced2424ff" name="doc/ja/setup.txt" role="data" />
+   <file baseinstalldir="/" md5sum="cf5f54354273921324d0e4a23d74c191" name="i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="41b06518e613ba20055a378f54b3ea66" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="384cd57843e79a0b77b810662bef18aa" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="4738e86bfc08453ec201299dae0619cb" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="894eb2d043fbaadd82d9a7c7e5915ebd" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="0040091966072ab0f660d67164f6e06e" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="d216258536a83fac4264ff58f9f60639" name="dependencies.yml" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
    <file baseinstalldir="/" md5sum="b3b449ce95b8d182e98b55f6fcd87131" name="README" role="data" />
   </dir>
@@ -48,6 +50,11 @@ Fixed memory leaks.
    <pearinstaller>
     <min>1.4.0</min>
    </pearinstaller>
+   <package>
+    <name>openpne</name>
+    <channel>plugins.openpne.jp</channel>
+    <min>3.6beta1</min>
+   </package>
   </required>
  </dependencies>
  <phprelease />
@@ -80,6 +87,21 @@ First release.
    <license>Apache</license>
    <notes>
 Fixed memory leaks.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.2.0</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2010-07-20</date>
+   <license>Apache</license>
+   <notes>
+Added an ability to set range of member-id.
    </notes>
   </release>
  </changelog>
