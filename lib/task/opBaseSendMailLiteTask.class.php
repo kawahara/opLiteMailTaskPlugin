@@ -25,7 +25,8 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     $connectionOptions = null,
     $tables = array(),
     $tableNames = array(),
-    $logger = null;
+    $logger = null,
+    $subject = null;
 
   protected function configure()
   {
@@ -38,6 +39,11 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     parent::execute($arguments, $options);
     $connection = Doctrine_Manager::connection();
     $this->connectionOptions = $connection->getOptions();
+
+    if (isset($options['subject']) && $options['subject'])
+    {
+      $this->subject = $options['subject'];
+    }
 
     sfContext::createInstance($this->createConfiguration('pc_frontend', 'prod'), 'pc_frontend');
     sfOpenPNEApplicationConfiguration::registerZend();
@@ -175,6 +181,11 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     {
       $signature = $this->getMailTemplate($env, 'signature');
       $template['template'] = $template['template']."\n".$signature['template'];
+    }
+
+    if (!$template['title'] && $this->subject)
+    {
+      $template['title'] = $this->subject;
     }
 
     $twigEnvironment = new Twig_Environment(new Twig_Loader_String());

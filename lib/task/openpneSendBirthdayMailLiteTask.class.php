@@ -26,6 +26,7 @@ class openpneSendBirthdayMailLiteTask extends opBaseSendMailLiteTask
     $this->addOptions(array(
       new sfCommandOption('start-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'Start member id', null),
       new sfCommandOption('end-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'End member id', null),
+      new sfCommandOption('subject', null, sfCommandOption::PARAMETER_OPTIONAL, 'The subject template of mail', '{{ member.name }} さんのフレンドに誕生日の近い方がいます！')
     ));
     $this->detailedDescription = <<<EOF
 The [openpne:send-birthday-mail|INFO] task does things.

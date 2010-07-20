@@ -26,6 +26,7 @@ class openpneSendDailyNewsLiteTask extends opBaseSendMailLiteTask
     $this->addOptions(array(
       new sfCommandOption('start-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'Start member id', null),
       new sfCommandOption('end-member-id', null, sfCommandOption::PARAMETER_OPTIONAL, 'End member id', null),
+      new sfCommandOption('subject', null, sfCommandOption::PARAMETER_OPTIONAL, 'The subject template of mail', '{{ op_config.sns_name }}デイリーニュース'),
     ));
     $this->detailedDescription = <<<EOF
 The [openpne:send-daily-news-lite|INFO] task does things.
@@ -134,7 +135,7 @@ EOF;
     $today = time();
 
     // load templates
-    list ($titleTpl, $tpl) = $this->getTwigTemplate('pc', 'dailyNews_lite');
+    list($titleTpl, $tpl) = $this->getTwigTemplate('pc', 'dailyNews_lite');
 
     $query = 'SELECT id, name FROM '.$this->getTableName('Member').' WHERE (is_active = 1 OR is_active IS NULL)';
     $params = array();
