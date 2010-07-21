@@ -13,11 +13,11 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-07-20</date>
- <time>15:38:53</time>
+ <date>2010-07-21</date>
+ <time>22:23:14</time>
  <version>
-  <release>1.2.0</release>
-  <api>1.2.0</api>
+  <release>1.2.0.1</release>
+  <api>1.2.0.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -25,16 +25,16 @@
  </stability>
  <license>Apache</license>
  <notes>
-Added an ability to set range of member-id.
+Fixed the issue that Japaneses contents cannot be fetched from DB.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="c420bad45de6b138623d0d565b481c28" name="bin/send_birthday_mail.cron" role="data" />
    <file baseinstalldir="/" md5sum="3af344b9691555daa3500f98e9447124" name="bin/send_daily_news.cron" role="data" />
    <file baseinstalldir="/" md5sum="6c110cba30d9d94cc09d20ea38deed41" name="config/mail_template.yml" role="data" />
-   <file baseinstalldir="/" md5sum="5ddd667c24cec9e19ffba53ced2424ff" name="doc/ja/setup.txt" role="data" />
+   <file baseinstalldir="/" md5sum="de12b33f5c5f9d14e49f1c76f5c1c27a" name="doc/ja/setup.txt" role="data" />
    <file baseinstalldir="/" md5sum="cf5f54354273921324d0e4a23d74c191" name="i18n/messages.ja.xml" role="data" />
-   <file baseinstalldir="/" md5sum="41b06518e613ba20055a378f54b3ea66" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="f2ee7c35282ee280a0d1490cd6ac591b" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="894eb2d043fbaadd82d9a7c7e5915ebd" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="0040091966072ab0f660d67164f6e06e" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="d216258536a83fac4264ff58f9f60639" name="dependencies.yml" role="data" />
@@ -102,6 +102,21 @@ Fixed memory leaks.
    <license>Apache</license>
    <notes>
 Added an ability to set range of member-id.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.2.0.1</release>
+    <api>1.2.0.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2010-07-21</date>
+   <license>Apache</license>
+   <notes>
+Fixed the issue that Japaneses contents cannot be fetched from DB.
    </notes>
   </release>
  </changelog>
