@@ -62,8 +62,15 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
   protected function getDbh()
   {
     $options = $this->connectionOptions;
-    return new PDO($options['dsn'], $options['username'],
+    $dbh =  new PDO($options['dsn'], $options['username'],
       (!$options['password'] ? '':$options['password']), $options['other']);
+
+    if (0 === strpos($options['dsn'], 'mysql:'))
+    {
+      $dbh->query('SET NAMES utf8');
+    }
+
+    return $dbh;
   }
 
   protected function executeQuery($query, $params = array())
