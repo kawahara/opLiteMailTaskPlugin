@@ -3,7 +3,7 @@
 ==================
 
 :Author: Shogo Kawahara <kawahara@bucyou.net>
-:Date: 2010-07-20
+:Date: 2010-07-21
 
 はじめに
 ========
@@ -33,7 +33,8 @@ OpenPNEのプロジェクトディレクトリで以下のコマンドを実行�
 
 ::
 
-  ./symfony opPlugin:install opLiteMailTaskPlugin -s beta
+  $ ./symfony opPlugin:install opLiteMailTaskPlugin -r 1.2.0.1
+  $ ./symfony cc
 
 
 メール配信設定
