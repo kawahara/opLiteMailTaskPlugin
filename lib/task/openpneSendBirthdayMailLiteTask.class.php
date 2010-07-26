@@ -65,7 +65,7 @@ EOF;
       $params[] = $options['end-member-id'];
     }
 
-    $memberProfilesStmt = $this->executeQuery($query);
+    $memberProfilesStmt = $this->executeQuery($query, $params);
     if ($memberProfilesStmt instanceof PDOStatement)
     {
       $sf_config = sfConfig::getAll();
