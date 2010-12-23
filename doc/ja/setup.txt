@@ -4,6 +4,7 @@
 
 :Author: Shogo Kawahara <kawahara@bucyou.net>
 :Date: 2010-07-21
+:Updated: 2010-12-24
 
 はじめに
 ========
@@ -15,12 +16,12 @@ opLiteMailTaskPluginは、機能限定になるものの OpenPNE3に含まれる
 動作環境
 --------
 
-正常に動作させるためにはOpenPNE3.4以上に、このプラグインをインストールがあります。
+このプラグインを正常に動作させるためには以下の環境が必要です。
 
-また、デイリーニュースを利用する場合はOpenPNE3のが必要とする環境に加えて以下の条件を満たす必要があります。
+* OpenPNE3.4以上
 
-* opDiaryPluginの導入 (デフォルトバンドル)
-* opCommunityTopicPluginの導入 (デフォルトバンドル)
+  - opDiaryPluginの導入 (デフォルトバンドル)
+  - opCommunityTopicPluginの導入 (デフォルトバンドル)
 
 セットアップ
 ============
