@@ -51,7 +51,7 @@ plugins/opLiteMailTaskPlugin/bin/* のcron ファイルに設定権限を付加�
 
 ::
 
-  $ chmod -R 0755 plugins/opLiteMailTaskPlugin/*.cron
+  $ chmod -R 0755 plugins/opLiteMailTaskPlugin/bin/*.cron
 
 /etc/crontab に以下を記述します。
 
