@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -13,28 +13,37 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-07-21</date>
- <time>22:26:15</time>
+ <developer>
+  <name>Shinichi Urabe</name>
+  <user>urabe</user>
+  <email />
+  <active>yes</active>
+ </developer>
+ <date>2010-12-26</date>
+ <time>12:53:32</time>
  <version>
-  <release>1.0.0.1</release>
-  <api>1.0.0.1</api>
+  <release>1.0.1</release>
+  <api>1.0.1</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license>Apache</license>
- <notes>Fixed the issue that Japaneses contents cannot be fetched from DB.</notes>
+ <notes>
+Fixed 3 bugs.
+ </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="c420bad45de6b138623d0d565b481c28" name="bin/send_birthday_mail.cron" role="data" />
    <file baseinstalldir="/" md5sum="3af344b9691555daa3500f98e9447124" name="bin/send_daily_news.cron" role="data" />
    <file baseinstalldir="/" md5sum="56a9c58bbb1ad7f56fcb5581c0dfb64d" name="config/mail_template.yml" role="data" />
-   <file baseinstalldir="/" md5sum="0436e7161840483a85ed61582ca17c93" name="doc/ja/setup.txt" role="data" />
+   <file baseinstalldir="/" md5sum="50acc3642f7b3cec1a9e449402f007a2" name="doc/ja/setup.txt" role="data" />
    <file baseinstalldir="/" md5sum="cf5f54354273921324d0e4a23d74c191" name="i18n/messages.ja.xml" role="data" />
-   <file baseinstalldir="/" md5sum="2c7eb54b284529c24ab5f4c3f0c8e117" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="068222cb2119021fd2248e30a3882735" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="4634ffd9db6e03c83114083a6d638226" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="43167359506250138d3a37c13946670e" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="18bd5237039ba56f318316dd1a2ee3a3" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="ec29dc1c862d97e5db758b9c825309f9" name="diff" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
    <file baseinstalldir="/" md5sum="b3b449ce95b8d182e98b55f6fcd87131" name="README" role="data" />
   </dir>
@@ -47,11 +56,6 @@
    <pearinstaller>
     <min>1.4.0</min>
    </pearinstaller>
-   <package>
-    <name>symfony</name>
-    <channel>pear.symfony-project.com</channel>
-    <min>1.2.0</min>
-   </package>
   </required>
  </dependencies>
  <phprelease />
@@ -67,7 +71,9 @@
    </stability>
    <date>2010-05-17</date>
    <license>Apache</license>
-   <notes>First release.</notes>
+   <notes>
+First release.
+   </notes>
   </release>
   <release>
    <version>
@@ -80,7 +86,9 @@
    </stability>
    <date>2010-05-20</date>
    <license>Apache</license>
-   <notes>Fixed memory leaks.</notes>
+   <notes>
+Fixed memory leaks.
+   </notes>
   </release>
   <release>
    <version>
@@ -93,7 +101,9 @@
    </stability>
    <date>2010-07-20</date>
    <license>Apache</license>
-   <notes>Fixed template for OpenPNE3.4.x and Added an bility to set subject.</notes>
+   <notes>
+Fixed template for OpenPNE3.4.x and Added an bility to set subject.
+   </notes>
   </release>
   <release>
    <version>
@@ -106,7 +116,24 @@
    </stability>
    <date>2010-07-21</date>
    <license>Apache</license>
-   <notes>Fixed the issue that Japaneses contents cannot be fetched from DB.</notes>
+   <notes>
+Fixed the issue that Japaneses contents cannot be fetched from DB.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2010-12-26</date>
+   <license>Apache</license>
+   <notes>
+Fixed 3 bugs.
+   </notes>
   </release>
  </changelog>
 </package>
