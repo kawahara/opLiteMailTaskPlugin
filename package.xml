@@ -13,14 +13,14 @@
   <email />
   <active>yes</active>
  </lead>
- <developer>
+ <lead>
   <name>Shinichi Urabe</name>
   <user>urabe</user>
   <email />
   <active>yes</active>
- </developer>
+ </lead>
  <date>2010-12-26</date>
- <time>12:53:32</time>
+ <time>17:09:54</time>
  <version>
   <release>1.0.1</release>
   <api>1.0.1</api>
@@ -43,7 +43,6 @@ Fixed 3 bugs.
    <file baseinstalldir="/" md5sum="4634ffd9db6e03c83114083a6d638226" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="43167359506250138d3a37c13946670e" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="18bd5237039ba56f318316dd1a2ee3a3" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="ec29dc1c862d97e5db758b9c825309f9" name="diff" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
    <file baseinstalldir="/" md5sum="b3b449ce95b8d182e98b55f6fcd87131" name="README" role="data" />
   </dir>
