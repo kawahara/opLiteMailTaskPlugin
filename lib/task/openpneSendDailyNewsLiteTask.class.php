@@ -102,6 +102,36 @@ EOF;
     return $results;
   }
 
+  protected function getUnreadMessageList($memberId, $limit = 5)
+  {
+    if (!class_exists('SendMessageData') || !class_exists('MessageSendList'))
+    {
+      return array();
+    }
+
+    $sql = 'SELECT id, subject, body, member_id'
+         . ' FROM '.$this->getTableName('SendMessageData')
+         . ' WHERE is_send = 1'
+         . ' AND id IN ('
+         . '   SELECT message_id'
+         . '   FROM '.$this->getTableName('MessageSendList')
+         . '   WHERE member_id = ?'
+         . '   AND is_deleted = 0'
+         . '   AND is_read = 0'
+         . ' ) ORDER BY updated_at DESC'
+         . ' LIMIT '.(int)$limit;
+
+    $stmt = $this->executeQuery($sql, array((int)$memberId));
+    $results = array();
+    while ($r = $stmt->fetch(Doctrine::FETCH_ASSOC))
+    {
+      $r['member'] = $this->getMember($r['member_id']);
+      $results[] = $r;
+    }
+
+    return $results;
+  }
+
   protected function getDailyNewsConfig($memberId)
   {
     $result = $this->fetchRow("SELECT value FROM member_config WHERE member_id = ? AND name = 'daily_news'", array($memberId));
@@ -181,6 +211,7 @@ EOF;
           'subject'   => $template['title'],
           'diaries'   => $this->getFriendDiaryList($member['id']),
           'communityTopics' => $this->getCommunityTopicList($member['id']),
+          'unreadMessages' => $this->getUnreadMessageList($member['id']),
           'today'     => $today,
           'op_config' => $op_config,
           'sf_config' => $sf_config,
