@@ -40,6 +40,19 @@ pc:
           　書き込みを見る：{{ sf_config.op_base_url }}/communityTopic/{{ communityTopic.id }}
 
           {% endfor %}
+          {% if unreadMessages %}
+          -------------------------------------------------------------------------------
+          ◆未読メッセージ◆
+          -------------------------------------------------------------------------------
+          {{ member.name }}さん宛の未読メッセージを最大5件までお知らせします。
+          
+          {% for unreadMessage in unreadMessages %}
+          ◇ニックネーム　：{{ unreadMessage.member.name }}さん
+          　タイトル　　　：{{ unreadMessage.subject }}
+          　未読メッセージを見る：{{ sf_config.op_base_url }}/message/read/{{ unreadMessage.id }}
+          
+          {% endfor %}
+          {% endif %}
           これをきっかけにぜひ交流を深めてくださいね！
 
   birthday_lite:
