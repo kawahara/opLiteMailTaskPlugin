@@ -19,11 +19,11 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-12-26</date>
- <time>17:00:39</time>
+ <date>2011-03-07</date>
+ <time>01:31:40</time>
  <version>
-  <release>1.2.1</release>
-  <api>1.2.1</api>
+  <release>1.2.2</release>
+  <api>1.2.2</api>
  </version>
  <stability>
   <release>stable</release>
@@ -31,7 +31,7 @@
  </stability>
  <license>Apache</license>
  <notes>
-Add 1 enhancement and fixed 3 bugs.
+Fixed bugs
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -40,8 +40,8 @@ Add 1 enhancement and fixed 3 bugs.
    <file baseinstalldir="/" md5sum="120aec33a51d40262ad9e6fb82b4b5b4" name="config/mail_template.yml" role="data" />
    <file baseinstalldir="/" md5sum="21e2fae4bf8c2fd8abe2de83e83360a3" name="doc/ja/setup.txt" role="data" />
    <file baseinstalldir="/" md5sum="cf5f54354273921324d0e4a23d74c191" name="i18n/messages.ja.xml" role="data" />
-   <file baseinstalldir="/" md5sum="f5485e2da2d735bbb1e2b26f17cdd6d8" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="a3427c1797d64dc75ae3e80c0653e519" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="f2ee7c35282ee280a0d1490cd6ac591b" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="93dfb9f75d385ea941de7c83716d1f02" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="66b65c1e8f4d9ba76dfe98216428b86d" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="d216258536a83fac4264ff58f9f60639" name="dependencies.yml" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
@@ -138,6 +138,21 @@ Fixed the issue that Japaneses contents cannot be fetched from DB.
    <license>Apache</license>
    <notes>
 Add 1 enhancement and fixed 3 bugs.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.2.2</release>
+    <api>1.2.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-03-07</date>
+   <license>Apache</license>
+   <notes>
+Fixed bugs
    </notes>
   </release>
  </changelog>
