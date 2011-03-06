@@ -19,11 +19,11 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-12-26</date>
- <time>17:09:54</time>
+ <date>2011-03-07</date>
+ <time>01:34:30</time>
  <version>
-  <release>1.0.1</release>
-  <api>1.0.1</api>
+  <release>1.0.2</release>
+  <api>1.0.2</api>
  </version>
  <stability>
   <release>stable</release>
@@ -31,7 +31,7 @@
  </stability>
  <license>Apache</license>
  <notes>
-Fixed 3 bugs.
+Fixed bugs
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -40,8 +40,8 @@ Fixed 3 bugs.
    <file baseinstalldir="/" md5sum="56a9c58bbb1ad7f56fcb5581c0dfb64d" name="config/mail_template.yml" role="data" />
    <file baseinstalldir="/" md5sum="50acc3642f7b3cec1a9e449402f007a2" name="doc/ja/setup.txt" role="data" />
    <file baseinstalldir="/" md5sum="cf5f54354273921324d0e4a23d74c191" name="i18n/messages.ja.xml" role="data" />
-   <file baseinstalldir="/" md5sum="4634ffd9db6e03c83114083a6d638226" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="43167359506250138d3a37c13946670e" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="2c7eb54b284529c24ab5f4c3f0c8e117" name="lib/task/opBaseSendMailLiteTask.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="9dab1054040117e35cfa927f09e94521" name="lib/task/openpneSendBirthdayMailLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="18bd5237039ba56f318316dd1a2ee3a3" name="lib/task/openpneSendDailyNewsLiteTask.class.php" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
    <file baseinstalldir="/" md5sum="b3b449ce95b8d182e98b55f6fcd87131" name="README" role="data" />
@@ -132,6 +132,21 @@ Fixed the issue that Japaneses contents cannot be fetched from DB.
    <license>Apache</license>
    <notes>
 Fixed 3 bugs.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.2</release>
+    <api>1.0.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-03-07</date>
+   <license>Apache</license>
+   <notes>
+Fixed bugs
    </notes>
   </release>
  </changelog>
