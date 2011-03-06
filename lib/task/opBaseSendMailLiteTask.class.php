@@ -289,19 +289,6 @@ abstract class opBaseSendMailLiteTask extends opBaseSendMailTask
     {
       $mailer->setReturnPath($envelopeFrom);
     }
-
-    try
-    {
-      $mailer->send($this->transport);
-    }
-    catch (Zend_Mail_Protocol_Exception $e)
-    {
-      if (sfConfig::get('sf_logging_enabled', false))
-      {
-        sfContext::getInstance()->getLogger()->err('[opLiteMailTaskPlugin] zend mail protocol exception: '.$e->getMessage());
-      }
-
-      throw new sfException('zend mail protocol exception: '.$e->getMessage());
-    }
+    $mailer->send($this->transport);
   }
 }
