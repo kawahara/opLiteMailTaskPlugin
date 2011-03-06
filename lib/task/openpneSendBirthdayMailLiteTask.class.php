@@ -101,7 +101,7 @@ EOF;
               $birthMember['id'], $member['id'], number_format(memory_get_usage()))
             );
           }
-          catch(Zend_Mil_Transport_Exception $e)
+          catch(Zend_Mail_Transport_Exception $e)
           {
             $this->mailLog(sprintf("%s (about member %d birthday to member %d)",$e->getMessage(), $birthMember['id'], $member['id']));
           }
