@@ -44,10 +44,14 @@ EOF;
     // load templates
     list($pcTitleTpl, $pcTpl) = $this->getTwigTemplate('pc', 'birthday_lite');
 
-    $birthday = $this->fetchRow('SELECT id FROM '.$this->getTableName('Profile').' WHERE name = ?', array('op_preset_birthday'));
+    $birthday = $this->fetchRow('SELECT id, is_edit_public_flag, default_public_flag FROM '.$this->getTableName('Profile').' WHERE name = ?', array('op_preset_birthday'));
     if (!$birthday)
     {
       throw new sfException('This project doesn\'t have the op_preset_birthday profile item.');
+    }
+    if (!$birthday['is_edit_public_flag'] && ProfileTable::PUBLIC_FLAG_PRIVATE == $birthday['default_public_flag'])
+    {
+      throw new sfException('all user\'s op_preset_birthday public_flag is hidden from backend');
     }
 
     $birthDatetime = new DateTime();
@@ -55,6 +59,11 @@ EOF;
 
     $query = 'SELECT member_id FROM '.$this->getTableName('MemberProfile').' WHERE profile_id = ? AND DATE_FORMAT(value_datetime, ?) = ?';
     $params = array($birthday['id'], '%m-%d', $birthDatetime->format('m-d'));
+    if ($birthday['is_edit_public_flag'])
+    {
+      $query .= ' AND public_flag <> ?';
+      $params[] = ProfileTable::PUBLIC_FLAG_PRIVATE;
+    }
     if (null !== $options['start-member-id'] && is_numeric($options['start-member-id']))
     {
       $query .= ' AND member_id >= ?';
